@@ -32,12 +32,14 @@ dfode-kit CMD ARGS
 - `label`: Generate supervised learning labels using Cantera's CVODE solver.
 - `train`: Train neural network models based on the specified datasets and parameters.
 
-A comprehensive tutorial guide of [tutorial](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/readme.md) is provided to help you get started quickly. Besides, the Jupyter Notebook version [notebook](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/dfode_kit_tutorial.ipynb) is provided here.
 
+A comprehensive tutorial guide of [tutorial](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/1_sample_train/readme.md) is provided to help you get started quickly. Besides, the Jupyter Notebook version [notebook](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/1_sample_train/dfode_kit_tutorial.ipynb) is provided here.
+
+Another tutorial guide [notebook](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/twoD_HIT_flame/1_sample_train/dfode_kit_tutorial.ipynb) for two dimensional HIT flame is also provided.
 
 ## Directories
 - **dfode-kit**: Main procedure and functions.
 - **mechanisms**: Thermochemical mechanism folder.
-- **model_test**: Model testing with priori and posteriori validataions
-- **tutorials**: Tutorials with sampling cases 
+- **canonical_cases**: Canonical cases for data sampling.
+- **tutorials**: Tutorials with sampling cases. 
 

@@ -76,28 +76,61 @@ def train(
 
     # Training
     loss_fn = torch.nn.L1Loss()
-    optimizer = torch.optim.Adam(demo_model.parameters(), lr=1e-3)
 
     demo_model.train()  
-    for epoch in range(100):
-        optimizer.zero_grad()
-        preds = demo_model(features)
-        loss1 = loss_fn(preds, labels)   ## LOSS  
+    max_epochs = 1500
+    initial_lr = 0.001
+    lr_decay_epoch = 500
+    batch_size = 20000
+    optimizer = torch.optim.Adam(demo_model.parameters(), lr=initial_lr)
 
-        Y_in = ((features[:,2:-1]*features_std[2:-1] + features_mean[2:-1])*0.1 + 1)**10
-        Y_out = (((preds*labels_std + labels_mean) + (features[:,2:-1]*features_std[2:-1] + features_mean[2:-1]))*0.1 + 1)**10
-        Y_target = (((labels*labels_std + labels_mean) + (features[:,2:-1]*features_std[2:-1] + features_mean[2:-1]))*0.1 + 1)**10
-        loss2 = loss_fn(Y_out.sum(axis=1), Y_in.sum(axis=1))
 
-        Y_out_total = torch.cat((Y_out, (1-Y_out.sum(axis=1)).reshape(Y_out.shape[0],1)), axis = 1)
-        Y_target_total = torch.cat((Y_target, (1-Y_target.sum(axis=1)).reshape(Y_target.shape[0],1)), axis = 1)
-        loss3 = loss_fn((formation_enthalpies*Y_out_total).sum(axis=1), (formation_enthalpies*Y_target_total).sum(axis=1))/time_step
-
-        loss = loss1 + loss2 + loss3/1e+13
-        loss.backward()
-        optimizer.step()
+    for epoch in range(max_epochs):
+        if epoch > 0 and epoch % lr_decay_epoch == 0:
+            for param_group in optimizer.param_groups:
+                param_group['lr'] *= 0.1
         
-        print("Epoch: {}, Loss1: {:4e}, Loss2: {:4e}, Loss3: {:4e}, Loss: {:4e}".format(epoch+1, loss1.item(), loss2.item(), loss3.item(), loss.item()))
+        # 初始化损失值
+        total_loss1 = 0
+        total_loss2 = 0
+        total_loss3 = 0
+        total_batches = 0
+
+        for i in range(0, len(features), batch_size):
+            batch_features = features[i:i + batch_size]
+            batch_labels = labels[i:i + batch_size]
+
+            optimizer.zero_grad()
+
+            preds = demo_model(batch_features)
+            loss1 = loss_fn(preds, batch_labels)  
+
+            Y_in = ((batch_features[:, 2:-1] * features_std[2:-1] + features_mean[2:-1]) * 0.1 + 1) ** 10
+            Y_out = (((preds * labels_std + labels_mean) + (batch_features[:, 2:-1] * features_std[2:-1] + features_mean[2:-1])) * 0.1 + 1) ** 10
+            Y_target = (((batch_labels * labels_std + labels_mean) + (batch_features[:, 2:-1] * features_std[2:-1] + features_mean[2:-1])) * 0.1 + 1) ** 10
+
+            loss2 = loss_fn(Y_out.sum(axis=1), Y_in.sum(axis=1))
+
+            Y_out_total = torch.cat((Y_out, (1 - Y_out.sum(axis=1)).reshape(Y_out.shape[0], 1)), axis=1)
+            Y_target_total = torch.cat((Y_target, (1 - Y_target.sum(axis=1)).reshape(Y_target.shape[0], 1)), axis=1)
+
+            loss3 = loss_fn((formation_enthalpies * Y_out_total).sum(axis=1), (formation_enthalpies * Y_target_total).sum(axis=1)) / time_step
+            loss = loss1 + loss2 + loss3 / 1e+13
+
+            total_loss1 += loss1.item()
+            total_loss2 += loss2.item()
+            total_loss3 += loss3.item()
+            total_loss += loss.item()
+
+            loss.backward()
+            optimizer.step()
+        
+        total_loss1 /= (len(features) / batch_size)
+        total_loss2 /= (len(features) / batch_size)
+        total_loss3 /= (len(features) / batch_size)
+        total_loss /= (len(features) / batch_size)
+
+        print("Epoch: {}, Loss1: {:4e}, Loss2: {:4e}, Loss3: {:4e}, Loss: {:4e}".format(epoch+1, total_loss1.item(), total_loss2.item(), total_loss3.item(), total_loss.item()))
 
     torch.save(
         {
