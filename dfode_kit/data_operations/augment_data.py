@@ -51,16 +51,16 @@ def random_perturb(
             for i in range(label_array.shape[0]):
                 qdot_[i] = (-(formation*(label_array[i, 4+n_species:4+2*n_species]-label_array[i, 2:2+n_species])/time_step).sum())
 
-        test_tmp = np.copy(array[0])
         for j in range(array.shape[0]):
+            test_tmp = np.copy(array[j])
             k = 0
             while True:
                 k += 1
 
-                test_r = array[j]
+                test_r = np.copy(array[j])
 
                 test_tmp[0] = test_r[0] + (maxT - minT)*(2*np.random.rand() - 1.0)*alpha
-                test_tmp[1] = test_r[1] + (maxP - minP)*(2*np.random.rand() - 1.0)*alpha*10
+                test_tmp[1] = test_r[1] + (maxP - minP)*(2*np.random.rand() - 1.0)*alpha*20
                 test_tmp[-1] = test_r[-1] + (maxN2 - minN2)*(2*np.random.rand() - 1)*alpha
                 for i in range(2, array.shape[1] -1):
                     test_tmp[i] = np.abs(test_r[i])**(1 + (2*np.random.rand() -1)*alpha)
