@@ -36,7 +36,7 @@ TorchSettings
     torch             on;
     GPU               on;
     log               on;
-    torchModel        "submission.pt"; 
+    torchModel        "model.pt"; 
     frozenTemperature 510;
     inferenceDeltaTime 1e-6;
     coresPerNode      16;
