@@ -25,12 +25,16 @@ def random_perturb(
     dataset: int,
     heat_limit: bool,
     element_limit: bool,
+    eq_ratio: float = 1,
+    frozenTem: float = 510,
     alpha: float = 0.1,
     gamma: float = 0.1,
     cq: float = 10,
     inert_idx: int = -1,
     time_step: float = 1e-6,
 ) -> np.ndarray:
+    
+    array = array[array[:, 0] > frozenTem]
     
     gas = ct.Solution(mech_path)
     n_species = gas.n_species
@@ -40,6 +44,8 @@ def random_perturb(
     minP = np.min(array[:,1])
     maxN2 = np.max(array[:,-1])
     minN2 = np.min(array[:,-1])
+
+    H_O_ratio_base = 2 * eq_ratio
 
     num = 0
     new_array = []
@@ -51,16 +57,16 @@ def random_perturb(
             for i in range(label_array.shape[0]):
                 qdot_[i] = (-(formation*(label_array[i, 4+n_species:4+2*n_species]-label_array[i, 2:2+n_species])/time_step).sum())
 
-        test_tmp = np.copy(array[0])
         for j in range(array.shape[0]):
+            test_tmp = np.copy(array[j])
             k = 0
             while True:
                 k += 1
 
-                test_r = array[j]
+                test_r = np.copy(array[j])
 
                 test_tmp[0] = test_r[0] + (maxT - minT)*(2*np.random.rand() - 1.0)*alpha
-                test_tmp[1] = test_r[1] + (maxP - minP)*(2*np.random.rand() - 1.0)*alpha*10
+                test_tmp[1] = test_r[1] + (maxP - minP)*(2*np.random.rand() - 1.0)*alpha*20
                 test_tmp[-1] = test_r[-1] + (maxN2 - minN2)*(2*np.random.rand() - 1)*alpha
                 for i in range(2, array.shape[1] -1):
                     test_tmp[i] = np.abs(test_r[i])**(1 + (2*np.random.rand() -1)*alpha)
@@ -82,11 +88,11 @@ def random_perturb(
 
 
                 if heat_limit and element_limit:
-                    condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma)) and  (2 * (1 - gamma)) <= H_O_ratio <= (2 * (1 + gamma)) and (qdot_new_ > 1/cq*qdot_[j] and qdot_new_ < cq*qdot_[j])  
+                    condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma)) and  (H_O_ratio_base * (1 - gamma)) <= H_O_ratio <= (H_O_ratio_base * (1 + gamma)) and (qdot_new_ > 1/cq*qdot_[j] and qdot_new_ < cq*qdot_[j])  
                 elif heat_limit and not element_limit:
                     condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma)) and  (qdot_new_ > 1/cq*qdot_[j] and qdot_new_ < cq*qdot_[j])
                 elif not heat_limit and element_limit:
-                    condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma)) and  (2 * (1 - gamma)) <= H_O_ratio <= (2 * (1 + gamma))
+                    condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma)) and  (H_O_ratio_base * (1 - gamma)) <= H_O_ratio <= (H_O_ratio_base * (1 + gamma))
                 else:
                     condition = (minT * (1 - gamma)) <= test_tmp[0] <= (maxT * (1 + gamma))
                 
@@ -107,8 +113,6 @@ def random_perturb(
 
     print(new_array.shape)
     return new_array
-
-
 
 def label(
     array: np.ndarray, 
