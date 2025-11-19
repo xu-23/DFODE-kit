@@ -9,6 +9,14 @@ DFODE-kit is an open-source Python package designed to accelerate combustion sim
 - **Seamless Integration**: Easily deploy trained models within the DeepFlame CFD solver or other platforms like OpenFOAM.
 - **Robust Performance**: Achieves high accuracy with up to two orders of magnitude speedup in various combustion scenarios.
 
+## Environment Setup
+Create a conda environment with Python 3.9:
+
+```bash
+conda create --name dfode_env python=3.9
+conda activate dfode_env
+```
+
 ## Installation
 To install DFODE-kit, clone the repository and install the dependencies:
 
