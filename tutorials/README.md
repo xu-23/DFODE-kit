@@ -4,7 +4,7 @@ This directory provides step-by-step tutorials for using DFODE-kit to develop an
 
 ## Pipeline Overview
 
-DFODE-kit's workflow consists of the following stages, as detailed in the manuscript:
+DFODE-kit's workflow consists of the following stages:
 
 1. **Data Sampling**: Extract thermochemical states from canonical flame simulations using low-dimensional manifold sampling. This ensures coverage of high-dimensional composition spaces efficiently.
 
@@ -16,7 +16,7 @@ DFODE-kit's workflow consists of the following stages, as detailed in the manusc
 
 5. **Model Deployment**: Integrate the trained model into CFD solvers like DeepFlame for accelerated chemistry integration.
 
-Each tutorial includes Jupyter notebooks, scripts, and example data to walk you through these stages.
+Each tutorial includes Jupyter notebooks and scripts to walk you through these stages.
 
 ## Available Tutorials
 
@@ -27,10 +27,6 @@ This tutorial demonstrates the pipeline for a 1D laminar premixed hydrogen/air f
 - **1_sample_train/**: Covers sampling, augmentation, labeling, and training.
   - `dfode_kit_init.ipynb`: Initialize simulation parameters (e.g., equivalence ratio, temperature, pressure) via `config_dict`.
   - `Allrun`: Execute the DeepFlame simulation to generate canonical flame data.
-  - Sampling: Use `dfode-kit sample` to extract states into HDF5 format (with `scalar_fields` and `mesh` groups).
-  - Augmentation: Apply `dfode-kit augment` for perturbed datasets with element ratio constraints.
-  - Labeling: Run `dfode-kit label` to compute ODE solutions with CVODE.
-  - Training: Execute `dfode-kit train` to train the MLP model with physical constraints.
   - `dfode_kit_tutorial.ipynb`: Comprehensive Jupyter notebook providing a step-by-step guide through the entire pipeline, including code execution, explanations of each stage, and instructions on both python interface and command line utilities.
 
 - **2_model_test/**: Test the trained model.
