@@ -9,6 +9,14 @@ DFODE-kit is an open-source Python package designed to accelerate combustion sim
 - **Seamless Integration**: Easily deploy trained models within the DeepFlame CFD solver or other platforms like OpenFOAM.
 - **Robust Performance**: Achieves high accuracy with up to two orders of magnitude speedup in various combustion scenarios.
 
+## Environment Setup
+Create a conda environment with Python 3.9:
+
+```bash
+conda create --name dfode_env python=3.9
+conda activate dfode_env
+```
+
 ## Installation
 To install DFODE-kit, clone the repository and install the dependencies:
 
@@ -33,9 +41,9 @@ dfode-kit CMD ARGS
 - `train`: Train neural network models based on the specified datasets and parameters.
 
 
-A comprehensive tutorial guide of [tutorial](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/1_sample_train/readme.md) is provided to help you get started quickly. Besides, the Jupyter Notebook version [notebook](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/oneD_freely_propagating_flame/1_sample_train/dfode_kit_tutorial.ipynb) is provided here.
+Comprehensive tutorials are provided in the `tutorials/` directory, including step-by-step guides for 1D premixed flames and 2D HIT flames.
 
-Another tutorial guide [notebook](https://github.com/deepflame-ai/DFODE-kit/blob/main/tutorials/twoD_HIT_flame/1_sample_train/dfode_kit_tutorial.ipynb) for two dimensional HIT flame is also provided.
+Note that running the simulations requires DeepFlame to be installed. Refer to the [DeepFlame GitHub repository](https://github.com/deepmodeling/deepflame-dev) and [documentation](https://deepflame.deepmodeling.com/en/latest/) for installation instructions.
 
 ## Directories
 - **dfode-kit**: Main procedure and functions.
