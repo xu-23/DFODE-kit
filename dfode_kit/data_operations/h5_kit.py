@@ -180,7 +180,7 @@ def predict_Y(model, model_path, d_arr, mech, device):
     return next_Y
 
 @torch.no_grad()
-def nn_integrate(orig_arr, model_path, device, model_class, model_layers, time_step, mech, frozen_temperature=305):
+def nn_integrate(orig_arr, model_path, device, model_class, model_layers, time_step, mech, frozen_temperature=510):
     model = load_model(model_path, device, model_class, model_layers)
     
     mask = orig_arr[:, 0] > frozen_temperature
