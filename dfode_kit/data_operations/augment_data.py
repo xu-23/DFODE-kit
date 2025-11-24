@@ -110,9 +110,9 @@ def random_perturb(
 
     new_array = np.array(new_array)
     new_array = new_array[np.random.choice(new_array.shape[0], size=dataset)]
-
-    print(new_array.shape)
-    return new_array
+    unique_array = np.unique(new_array, axis=0)
+    print(unique_array.shape)
+    return unique_array
 
 def label(
     array: np.ndarray, 
