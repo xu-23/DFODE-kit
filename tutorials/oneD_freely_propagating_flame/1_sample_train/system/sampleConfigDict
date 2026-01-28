@@ -15,7 +15,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // constant/CanteraTorchProperties settings
-CanteraMechanismFile_   "/data1/kexiao/projects/dfode_project/DFODE-kit/mechanisms/Burke2012_s9r23.yaml";
+CanteraMechanismFile_   "../../../mechanisms/Burke2012_s9r23.yaml";
 inertSpecie_            "N2";
 
 torch_                  off;

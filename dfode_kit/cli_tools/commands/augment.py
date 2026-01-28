@@ -57,7 +57,7 @@ def handle_command(args):
     print("Data shape:", data.shape)
 
 
-    All_data = random_perturb(data, args.mech, args.dataset_num, args.heat_limit, args.element_limit, args.perturb_factor)
+    All_data = random_perturb(data, args.mech, args.dataset_num, args.heat_limit, args.element_limit)
 
     np.save(args.output_file, All_data)
     print("Saved augmented data shape:", All_data.shape)
