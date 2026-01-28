@@ -61,7 +61,7 @@ def train(
     thermochem_states1[:, 2:] = np.clip(thermochem_states1[:, 2:], 0, 1)
     thermochem_states2[:, 2:] = np.clip(thermochem_states2[:, 2:], 0, 1)
 
-    features = torch.tensor(BCT(thermochem_states1), dtype=torch.float32).to(device)
+    features = torch.tensor(np.hstack((thermochem_states1[:, :2], BCT(thermochem_states1[:, 2:]))), dtype=torch.float32).to(device)
     labels = torch.tensor(BCT(thermochem_states2[:, 2:-1]) - BCT(thermochem_states1[:, 2:-1]), dtype=torch.float32).to(device)
 
     features_mean = torch.mean(features, dim=0)
@@ -95,6 +95,7 @@ def train(
         total_loss2 = 0
         total_loss3 = 0
         total_batches = 0
+        total_loss = 0
 
         for i in range(0, len(features), batch_size):
             batch_features = features[i:i + batch_size]
@@ -130,7 +131,7 @@ def train(
         total_loss3 /= (len(features) / batch_size)
         total_loss /= (len(features) / batch_size)
 
-        print("Epoch: {}, Loss1: {:4e}, Loss2: {:4e}, Loss3: {:4e}, Loss: {:4e}".format(epoch+1, total_loss1.item(), total_loss2.item(), total_loss3.item(), total_loss.item()))
+        print("Epoch: {}, Loss1: {:4e}, Loss2: {:4e}, Loss3: {:4e}, Loss: {:4e}".format(epoch+1, total_loss1, total_loss2, total_loss3, total_loss))
 
     torch.save(
         {

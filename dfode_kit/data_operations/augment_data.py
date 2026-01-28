@@ -26,7 +26,7 @@ def random_perturb(
     heat_limit: bool,
     element_limit: bool,
     eq_ratio: float = 1,
-    frozenTem: float = 510,
+    frozenTem: float = 310,
     alpha: float = 0.1,
     gamma: float = 0.1,
     cq: float = 10,
