@@ -22,14 +22,14 @@ torch_                  off;
 GPU_                    on;
 log_                    on;
 torchModel_             "DNN_model.pt"; 
-frozenTemperature_      510;
+frozenTemperature_      310;
 inferenceDeltaTime_     1e-6;
 coresPerNode_           16;
 
 // blockMeshDict settings
-domainWidth             0.0018471809630057887;
-domainLength            0.018471809630057887;
-ignitionRegion          0.009235904815028943;
+domainWidth             0.0018471809630057818;
+domainLength            0.018471809630057817;
+ignitionRegion          0.009235904815028909;
 
 // controlDict & sampling settings
 simTimeStep             0.00011;
@@ -37,7 +37,7 @@ simTime                 0.00011;
 simWriteInterval        1e-05;
 
 // setFieldsDict & 0 dir settings
-UInlet                  2.3489328862660463;
+UInlet                  2.3489328862659917;
 pInternal               101325;
 
 TUnburnt              300.0000000000;
